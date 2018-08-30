@@ -20,6 +20,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from operator import add
+from feature import get_features
 
 def read_labeled(domain):
     input_file = open('../data/%s.labeled'%domain,'r')
@@ -100,13 +101,41 @@ def set_up_data(sentences,embeddings):
         u.append(make_sentence_vector(sent,embeddings))
     return u
 
+def concatenate(a,b):
+    if len(a)>0 and len(b)>0:
+        return np.concatenate((a,b),axis=0)
+    elif len(a)==0 and len(b)!=0:
+        print "a empty!!"
+        return np.array(b)
+    elif len(b)==0 and len(a)!=0: 
+        print "b empty!! length a = %d"%len(a)
+        return np.array(a)
+    else:
+        return list()
+pass
+
 ###############################################################
-def prepare_data(domain,embeddings,k=None,selected_labels=None):
+# def add_writeprints(domain,k=None,selected_labels=None):
+#     X,y = read_labeled(domain)
+#     if k !=None:
+#         X,y = filter_labels(X,y,selected_labels)
+    
+#     if k == None:
+#         np.save('../data/%s/')
+
+def prepare_data(domain,embeddings,k=None,selected_labels=None,writeprints=False):
     X,y = read_labeled(domain)
     if k !=None:
         # selected_labels = random.sample(set(y),k)
         X,y = filter_labels(X,y,selected_labels)
-    X = set_up_data(X,embeddings)
+    if writeprints == False:
+        X = set_up_data(X,embeddings)
+    else:
+        docs = [' '.join(x) for x in X]
+        add_X = get_features(docs)
+        X = set_up_data(X,embeddings)
+        X = concatenate(X,add_X)
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     print len(X_train),len(X_test)
@@ -151,7 +180,8 @@ def evaluate_pair(source,target,k=None):
         X_test = np.load("../data/%s/%s/X_test.npy"%(target,k))
         y_train = np.load("../data/%s/%s/y_train.npy"%(source,k))
         y_test = np.load("../data/%s/%s/y_test.npy"%(target,k))
-    print baseline(X_train,y_train,X_test,y_test)
+    print 'glove+writeprints:',baseline(X_train,y_train,X_test,y_test)
+    print 'glove:',baseline(X_train[:300],y_train,X_test[:300],y_test)
     pass
 
 def filter_labels(X,y,selected_labels):
@@ -191,14 +221,14 @@ def get_clf_func(clf,k=15):
 def preprocess(k):
     # save_new_glove_model() 
     authors = load_preprocess_obj('reddit_author_dict').values()
-    # selected_labels = random.sample(authors,k)
-    # print selected_labels
-    # np.save('../data/authors_%s'%k,selected_labels)
-    selected_labels = np.load('../data/authors_%s.npy'%k)
+    selected_labels = random.sample(authors,k)
+    print selected_labels
+    np.save('../data/authors_%s'%k,selected_labels)
+    # selected_labels = np.load('../data/authors_%s.npy'%k)
     embeddings = load_preprocess_obj('glove.filtered')
     domains = ['reddit','twitter']
     for domain in domains:
-        prepare_data(domain,embeddings,k,selected_labels)
+        prepare_data(domain,embeddings,k,selected_labels,writeprints=True)
     pass
 
 ###############################################################
