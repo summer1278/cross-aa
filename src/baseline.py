@@ -8,10 +8,13 @@ Baseline methods
 
 import sys
 import glob
+import random
 import pickle,os
 import numpy as np 
+from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier,NearestNeighbors
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
@@ -24,8 +27,7 @@ def read_labeled(domain):
     labels = [int(line.strip().split()[0]) for line in lines]
     contents = [line.strip().split()[1:] for line in lines]
     contents = [[word.lower() for word in line] for line in contents]
-    return labels, contents
-
+    return contents,labels
 
 
 def load_filtered_glove(filtered_features,gloveFile):
@@ -47,7 +49,7 @@ def collect_all():
     domains = ['reddit','twitter']
     all_data = list()
     for domain in domains:
-        all_data += read_labeled(domain)[1]
+        all_data += read_labeled(domain)[0]
     all_features = set(x for reivew in all_data for x in reivew)
     print len(all_features)
     return all_features
@@ -79,10 +81,138 @@ def load_preprocess_obj(name):
 
 ###############################################################
 
+def make_sentence_vector(sentence,embeddings):
+    temp = np.array(np.zeros(300))
+    # print embeddings
+    for word in sentence:
+        if word in embeddings:
+            temp = map(add, temp, np.array(embeddings[word]))
+        else:
+            # print "%s is not in pretrained embeddings"%word
+            temp = map(add,temp,np.array(np.zeros(300)))
+            # temp =np.add(temp,embedding_for_word(word,pre_model,self_model))
+        # print len(temp)
+    return temp
+
+def set_up_data(sentences,embeddings):
+    u = list()
+    for sent in sentences:
+        u.append(make_sentence_vector(sent,embeddings))
+    return u
+
+###############################################################
+def prepare_data(domain,embeddings,k=None,selected_labels=None):
+    X,y = read_labeled(domain)
+    if k !=None:
+        # selected_labels = random.sample(set(y),k)
+        X,y = filter_labels(X,y,selected_labels)
+    X = set_up_data(X,embeddings)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    print len(X_train),len(X_test)
+    if k == None:
+        filename = "../data/%s/X_train"%domain
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc:
+                if exc.errno != errno.EEXIST:
+                    raise
+        np.save("../data/%s/X_train"%domain,X_train)
+        np.save("../data/%s/X_test"%domain,X_test)
+        np.save("../data/%s/y_train"%domain,y_train)
+        np.save("../data/%s/y_test"%domain,y_test)
+    else:
+        filename = "../data/%s/%s/X_train"%(domain,k)
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc:
+                if exc.errno != errno.EEXIST:
+                    raise
+        np.save("../data/%s/%s/X_train"%(domain,k),X_train)
+        np.save("../data/%s/%s/X_test"%(domain,k),X_test)
+        np.save("../data/%s/%s/y_train"%(domain,k),y_train)
+        np.save("../data/%s/%s/y_test"%(domain,k),y_test)
+    return X_train,y_train,X_test,y_test
+
+def evaluate_pair(source,target,k=None):
+    print source,target
+    print k
+    # initialize
+    X_train,y_train,X_test,y_test = None,None,None,None
+    if k == None:
+        X_train = np.load("../data/%s/X_train.npy"%source)
+        X_test = np.load("../data/%s/X_test.npy"%target)
+        y_train = np.load("../data/%s/y_train.npy"%source)
+        y_test = np.load("../data/%s/y_test.npy"%target)
+    else:
+        X_train = np.load("../data/%s/%s/X_train.npy"%(source,k))
+        X_test = np.load("../data/%s/%s/X_test.npy"%(target,k))
+        y_train = np.load("../data/%s/%s/y_train.npy"%(source,k))
+        y_test = np.load("../data/%s/%s/y_test.npy"%(target,k))
+    print baseline(X_train,y_train,X_test,y_test)
+    pass
+
+def filter_labels(X,y,selected_labels):
+    # print len(X),len(y)
+    # print selected_labels
+    new_X = [a for a,b in zip(X,y) if b in selected_labels]
+    new_y = [b for b in y if b in selected_labels]
+    print len(X),len(new_X)
+    return new_X,new_y
+
+# baseline: NoAdapt
+# default: LogisticRegression
+def baseline(X_train,y_train,X_test,y_test,clf='lr'):
+    clf_func = get_clf_func(clf)
+    clf_func.fit(X_train,y_train)
+    pred = clf_func.predict(X_test)
+    acc = accuracy_score(y_test, pred)
+    # print acc
+    return acc
+
+# stroe all the classifiers and get the right one to be used
+def get_clf_func(clf,k=15):
+    if clf == 'knn':
+        clf_func = KNeighborsClassifier(n_neighbors=k) # knn
+    elif clf == 'lr':
+        clf_func = LogisticRegression(n_jobs=-1,solver='lbfgs')
+    elif clf == 'tree':
+        clf_func = DecisionTreeClassifier()
+    elif clf == 'naive':
+        clf_func = GaussianNB()
+    elif clf == 'svm':
+        clf_func = LinearSVC(random_state=0)
+    else: # nn
+        clf_func = MLPClassifier()
+    return clf_func
+
+def preprocess(k):
+    # save_new_glove_model() 
+    authors = load_preprocess_obj('reddit_author_dict').values()
+    # selected_labels = random.sample(authors,k)
+    # print selected_labels
+    # np.save('../data/authors_%s'%k,selected_labels)
+    selected_labels = np.load('../data/authors_%s.npy'%k)
+    embeddings = load_preprocess_obj('glove.filtered')
+    domains = ['reddit','twitter']
+    for domain in domains:
+        prepare_data(domain,embeddings,k,selected_labels)
+    pass
+
+###############################################################
+
 if __name__ == '__main__':
-    save_new_glove_model()
+    k = 10
+    # preprocess(k)
     # domain = "reddit"
     # domain = "twitter"
     # read_labeled(domain)
+    source = "reddit"
+    target = "twitter"
+    # source = "twitter"
+    # target = "reddit"
+    evaluate_pair(source,target)
 
     
