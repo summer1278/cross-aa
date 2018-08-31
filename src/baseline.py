@@ -219,22 +219,22 @@ def get_clf_func(clf,k=15):
     return clf_func
 
 def preprocess(k):
-    save_new_glove_model() 
-    # authors = load_preprocess_obj('reddit_author_dict').values()
-    # selected_labels = random.sample(authors,k)
-    # print selected_labels
-    # np.save('../data/authors_%s'%k,selected_labels)
+    # save_new_glove_model() 
+    authors = load_preprocess_obj('reddit_author_dict').values()
+    selected_labels = random.sample(authors,k)
+    print selected_labels
+    np.save('../data/authors_%s'%k,selected_labels)
     # selected_labels = np.load('../data/authors_%s.npy'%k)
-    # embeddings = load_preprocess_obj('glove.filtered')
-    # domains = ['reddit','twitter']
-    # for domain in domains:
-    #     prepare_data(domain,embeddings,k,selected_labels,writeprints=True)
+    embeddings = load_preprocess_obj('glove.filtered')
+    domains = ['reddit','twitter']
+    for domain in domains:
+        prepare_data(domain,embeddings,k,selected_labels,writeprints=True)
     pass
 
 ###############################################################
 
 if __name__ == '__main__':
-    k = 10
+    k = 2
     preprocess(k)
     # domain = "reddit"
     # domain = "twitter"
