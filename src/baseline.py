@@ -101,10 +101,11 @@ def set_up_data(sentences,embeddings):
         u.append(make_sentence_vector(sent,embeddings))
     return u
 
+# expand features
 def concatenate(a,b):
     if len(a)>0 and len(b)>0:
         print len(a),len(b)
-        return np.concatenate((a,b),axis=0)
+        return np.concatenate((a,b),axis=1)
     elif len(a)==0 and len(b)!=0:
         print "a empty!!"
         return np.array(b)
