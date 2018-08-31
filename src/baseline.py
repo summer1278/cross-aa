@@ -51,7 +51,7 @@ def collect_all():
     all_data = list()
     for domain in domains:
         all_data += read_labeled(domain)[0]
-    all_features = set(x for reivew in all_data for x in reivew)
+    all_features = set([x for reivew in all_data for x in reivew])
     print len(all_features)
     return all_features
 
