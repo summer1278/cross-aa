@@ -10,6 +10,9 @@ import string
 import nltk
 import numpy as np
 from nltk.data import load
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 def writeprints(text):
     writeprints = []

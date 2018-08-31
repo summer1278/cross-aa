@@ -234,15 +234,15 @@ def preprocess(k):
 ###############################################################
 
 if __name__ == '__main__':
-    k = 10
-    # preprocess(k)
+    k = 25
+    preprocess(k)
     # domain = "reddit"
     # domain = "twitter"
     # read_labeled(domain)
-    source = "reddit"
-    target = "twitter"
+    # source = "reddit"
+    # target = "twitter"
     # source = "twitter"
     # target = "reddit"
-    evaluate_pair(source,target)
+    # evaluate_pair(source,target)
 
     
