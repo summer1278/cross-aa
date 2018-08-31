@@ -117,13 +117,12 @@ def concatenate(a,b):
 pass
 
 ###############################################################
-# def add_writeprints(domain,k=None,selected_labels=None):
-#     X,y = read_labeled(domain)
-#     if k !=None:
-#         X,y = filter_labels(X,y,selected_labels)
-    
-#     if k == None:
-#         np.save('../data/%s/')
+def store_writeprints(domain):
+    X,y = read_labeled(domain)
+    docs = [' '.join(x) for x in X]
+    X_2 = get_features(docs)
+    save_preprocess_obj(dict(zip(X,X_2)),'%s.writeprints'%domain)
+    pass
 
 def prepare_data(domain,embeddings,k=None,selected_labels=None,writeprints=False):
     X,y = read_labeled(domain)
@@ -237,10 +236,12 @@ def preprocess(k):
 
 if __name__ == '__main__':
     k = 2
-    preprocess(k)
-    # domain = "reddit"
+    # preprocess(k)
+
+    domain = "reddit"
     # domain = "twitter"
     # read_labeled(domain)
+    store_writeprints(domain)
     # source = "reddit"
     # target = "twitter"
     # source = "twitter"

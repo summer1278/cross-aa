@@ -69,8 +69,12 @@ def writeprints(text):
 
 def get_features(contents):
     features = []
+    contents_length = len(contents)
+    count = 0
     for text in contents:
+        count += 1
         features.append(writeprints(text))
+        print count,contents_length
     return features
 
 def token_to_pos(tokens):
