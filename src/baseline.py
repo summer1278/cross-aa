@@ -103,6 +103,7 @@ def set_up_data(sentences,embeddings):
 
 def concatenate(a,b):
     if len(a)>0 and len(b)>0:
+        print len(a),len(b)
         return np.concatenate((a,b),axis=0)
     elif len(a)==0 and len(b)!=0:
         print "a empty!!"
@@ -189,7 +190,7 @@ def filter_labels(X,y,selected_labels):
     # print selected_labels
     new_X = [a for a,b in zip(X,y) if b in selected_labels]
     new_y = [b for b in y if b in selected_labels]
-    print len(X),len(new_X)
+    # print len(X),len(new_X)
     return new_X,new_y
 
 # baseline: NoAdapt
