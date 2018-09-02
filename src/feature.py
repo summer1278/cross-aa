@@ -31,7 +31,7 @@ def writeprints(text):
     vocab_richness = float(len(set(words)))/len(words)
     # print vocab_richness
     """char-level"""
-    tokens = nltk.word_tokenize(text.decode('utf8'))
+    tokens = nltk.word_tokenize(text)
     # number of chars
     num_chars = sum([len(w) for w in tokens])
     # count of letters
