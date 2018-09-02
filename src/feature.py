@@ -31,7 +31,7 @@ def writeprints(text):
     vocab_richness = float(len(set(words)))/len(words)
     # print vocab_richness
     """char-level"""
-    tokens = nltk.word_tokenize(text)
+    tokens = nltk.word_tokenize(text.decode('utf8'))
     # number of chars
     num_chars = sum([len(w) for w in tokens])
     # count of letters
@@ -88,6 +88,8 @@ if __name__ == '__main__':
         "1 I do n't frequent that subreddit , so I would n't know .\n",
         "2 [ TIL what brogue is ] . Quite an adjective , I must say .",
         "3 & gt ; Truly August is the best 1 month Indeed .]\n"]
-    docs = [' '.join(line.strip().split()[1:]) for line in lines]
+    # docs = [' '.join(line.strip().split()[1:]) for line in lines]
     # print contents
-    print len(writeprints(docs[0]))
+    # print len(writeprints(docs[0]))
+    text = "54 چرا همه هموطنان عزیز اخیرا ceo و founder شدن؟ یه مدت همه طراح و توسعه دهنده وب بودن، قبلش هم که عکاس و مدل ! برنامه بعدی چیه؟ ایران"
+    writeprints(text)

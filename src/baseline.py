@@ -247,5 +247,3 @@ if __name__ == '__main__':
     # source = "twitter"
     # target = "reddit"
     # evaluate_pair(source,target)
-
-    
