@@ -236,8 +236,8 @@ def preprocess(k):
 
 if __name__ == '__main__':
     # k = 10
-    k = 25
-    # k = 50
+    # k = 25
+    k = 50
     preprocess(k)
 
     # domain = "reddit"
