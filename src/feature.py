@@ -92,4 +92,4 @@ if __name__ == '__main__':
     # print contents
     # print len(writeprints(docs[0]))
     text = "54 چرا همه هموطنان عزیز اخیرا ceo و founder شدن؟ یه مدت همه طراح و توسعه دهنده وب بودن، قبلش هم که عکاس و مدل ! برنامه بعدی چیه؟ ایران"
-    writeprints(text)
+    print writeprints(text)
