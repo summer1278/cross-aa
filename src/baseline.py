@@ -235,13 +235,13 @@ def preprocess(k):
 ###############################################################
 
 if __name__ == '__main__':
-    k = 2
-    # preprocess(k)
+    k = 10
+    preprocess(k)
 
     # domain = "reddit"
-    domain = "twitter"
+    # domain = "twitter"
     # read_labeled(domain)
-    store_writeprints(domain)
+    # store_writeprints(domain)
     # source = "reddit"
     # target = "twitter"
     # source = "twitter"
