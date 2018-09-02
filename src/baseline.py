@@ -240,8 +240,8 @@ if __name__ == '__main__':
     # k = 50
     # preprocess(k)
 
-    domain = "reddit"
-    # domain = "twitter"
+    # domain = "reddit"
+    domain = "twitter"
     # read_labeled(domain)
     store_writeprints(domain)
     # source = "reddit"
