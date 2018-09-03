@@ -243,7 +243,7 @@ if __name__ == '__main__':
     domain = "reddit"
     # domain = "twitter"
     X,y = read_labeled(domain)
-    X = X[:10]
+    X = X[:3]
     print X
     docs = [' '.join(x) for x in X]
     embeddings = load_preprocess_obj('glove.filtered')
