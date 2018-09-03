@@ -245,7 +245,11 @@ if __name__ == '__main__':
     X,y = read_labeled(domain)
     X = X[:10]
     print X
-    
+    embeddings = load_preprocess_obj('glove.filtered')
+    X = set_up_data(X,embeddings)
+    docs = [' '.join(x) for x in X]
+    X_2 = get_features(docs)
+    print X_2,len(X_2)
     # store_writeprints(domain)
     # source = "reddit"
     # target = "twitter"
