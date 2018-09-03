@@ -248,7 +248,7 @@ if __name__ == '__main__':
     docs = [' '.join(x) for x in X]
     embeddings = load_preprocess_obj('glove.filtered')
     X = set_up_data(X,embeddings)
-    print X.shape
+    print np.array(X).shape
     X_2 = get_features(docs)
     print np.array(X_2),np.array(X_2).shape
     # store_writeprints(domain)
