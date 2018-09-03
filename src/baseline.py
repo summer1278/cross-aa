@@ -181,8 +181,9 @@ def evaluate_pair(source,target,k=None):
         X_test = np.load("../data/%s/%s/X_test.npy"%(target,k))
         y_train = np.load("../data/%s/%s/y_train.npy"%(source,k))
         y_test = np.load("../data/%s/%s/y_test.npy"%(target,k))
+    print 'glove:',baseline(X_train[:,:300],y_train,X_test[:,:300],y_test)
     print 'glove+writeprints:',baseline(X_train,y_train,X_test,y_test)
-    print 'glove:',baseline(X_train[:300],y_train,X_test[:300],y_test)
+    
     pass
 
 def filter_labels(X,y,selected_labels):
@@ -239,21 +240,11 @@ if __name__ == '__main__':
     # k = 25
     # k = 50
     # preprocess(k)
-
-    domain = "reddit"
+    # domain = "reddit"
     # domain = "twitter"
-    X,y = read_labeled(domain)
-    X = X[:3]
-    print X
-    docs = [' '.join(x) for x in X]
-    embeddings = load_preprocess_obj('glove.filtered')
-    X = set_up_data(X,embeddings)
-    print np.array(X).shape
-    X_2 = get_features(docs)
-    print concatenate(X,X_2).shape
     # store_writeprints(domain)
-    # source = "reddit"
-    # target = "twitter"
+    source = "reddit"
+    target = "twitter"
     # source = "twitter"
     # target = "reddit"
-    # evaluate_pair(source,target,k)
+    evaluate_pair(source,target,k)
