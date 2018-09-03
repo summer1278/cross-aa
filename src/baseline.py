@@ -245,11 +245,12 @@ if __name__ == '__main__':
     X,y = read_labeled(domain)
     X = X[:10]
     print X
+    docs = [' '.join(x) for x in X]
     embeddings = load_preprocess_obj('glove.filtered')
     X = set_up_data(X,embeddings)
-    docs = [' '.join(x) for x in X]
+    print X.shape
     X_2 = get_features(docs)
-    print X_2,len(X_2)
+    print np.array(X_2),np.array(X_2).shape
     # store_writeprints(domain)
     # source = "reddit"
     # target = "twitter"
