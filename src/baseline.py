@@ -236,15 +236,15 @@ def preprocess(k):
 ###############################################################
 
 if __name__ == '__main__':
-    # k = 10
+    k = 10
     # k = 25
-    k = 50
-    preprocess(k)
+    # k = 50
+    # preprocess(k)
     # domain = "reddit"
     # domain = "twitter"
     # store_writeprints(domain)
-    # source = "reddit"
+    source = "reddit"
     # target = "twitter"
     # source = "twitter"
-    # target = "reddit"
-    # evaluate_pair(source,target,k)
+    target = "reddit"
+    evaluate_pair(source,target,k)
