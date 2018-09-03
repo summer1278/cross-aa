@@ -183,7 +183,6 @@ def evaluate_pair(source,target,k=None):
         y_test = np.load("../data/%s/%s/y_test.npy"%(target,k))
     print 'glove:',baseline(X_train[:,:300],y_train,X_test[:,:300],y_test)
     print 'glove+writeprints:',baseline(X_train,y_train,X_test,y_test)
-    
     pass
 
 def filter_labels(X,y,selected_labels):
@@ -228,7 +227,8 @@ def preprocess(k):
     selected_labels = np.load('../data/authors_%s.npy'%k)
     print selected_labels
     embeddings = load_preprocess_obj('glove.filtered')
-    domains = ['reddit','twitter']
+    # domains = ['reddit','twitter']
+    domains = ["twitter"]
     for domain in domains:
         prepare_data(domain,embeddings,k,selected_labels,writeprints=True)
     pass
@@ -236,15 +236,15 @@ def preprocess(k):
 ###############################################################
 
 if __name__ == '__main__':
-    k = 10
-    # k = 25
+    # k = 10
+    k = 25
     # k = 50
-    # preprocess(k)
+    preprocess(k)
     # domain = "reddit"
     # domain = "twitter"
     # store_writeprints(domain)
-    source = "reddit"
-    target = "twitter"
+    # source = "reddit"
+    # target = "twitter"
     # source = "twitter"
     # target = "reddit"
-    evaluate_pair(source,target,k)
+    # evaluate_pair(source,target,k)
