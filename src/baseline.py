@@ -250,7 +250,7 @@ if __name__ == '__main__':
     X = set_up_data(X,embeddings)
     print np.array(X).shape
     X_2 = get_features(docs)
-    print np.array(X_2),np.array(X_2).shape
+    print concatenate(X,X_2).shape
     # store_writeprints(domain)
     # source = "reddit"
     # target = "twitter"
