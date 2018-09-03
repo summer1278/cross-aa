@@ -240,12 +240,15 @@ if __name__ == '__main__':
     # k = 50
     # preprocess(k)
 
-    # domain = "reddit"
+    domain = "reddit"
     # domain = "twitter"
-    # read_labeled(domain)
+    X,y = read_labeled(domain)
+    X = X[:10]
+    print X
+    
     # store_writeprints(domain)
-    source = "reddit"
-    target = "twitter"
+    # source = "reddit"
+    # target = "twitter"
     # source = "twitter"
     # target = "reddit"
-    evaluate_pair(source,target,k)
+    # evaluate_pair(source,target,k)
