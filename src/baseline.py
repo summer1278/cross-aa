@@ -21,6 +21,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from operator import add
 from feature import get_features
+from adf import finder
 
 def read_labeled(domain):
     input_file = open('../data/%s.labeled'%domain,'r')
@@ -104,7 +105,7 @@ def set_up_data(sentences,embeddings):
 # expand features
 def concatenate(a,b):
     if len(a)>0 and len(b)>0:
-        print len(a),len(b)
+        # print len(a),len(b)
         return np.concatenate((a,b),axis=1)
     elif len(a)==0 and len(b)!=0:
         print "a empty!!"
@@ -181,8 +182,10 @@ def evaluate_pair(source,target,k=None):
         X_test = np.load("../data/%s/%s/X_test.npy"%(target,k))
         y_train = np.load("../data/%s/%s/y_train.npy"%(source,k))
         y_test = np.load("../data/%s/%s/y_test.npy"%(target,k))
-    print 'glove:',baseline(X_train[:,:300],y_train,X_test[:,:300],y_test)
-    print 'glove+writeprints:',baseline(X_train,y_train,X_test,y_test)
+    # print 'glove:',baseline(X_train[:,:300],y_train,X_test[:,:300],y_test)
+    # print 'glove+writeprints:',baseline(X_train,y_train,X_test,y_test)
+    print 'glove:',finder(X_train[:,:300],y_train,X_test[:,:300],y_test)
+    print 'glove+writeprints:',finder(X_train,y_train,X_test,y_test)
     pass
 
 def filter_labels(X,y,selected_labels):
@@ -202,6 +205,10 @@ def baseline(X_train,y_train,X_test,y_test,clf='lr'):
     acc = accuracy_score(y_test, pred)
     # print acc
     return acc
+
+# adf classification
+# def finder_classify(X_train,y_train,X_test,y_test):
+#     return finder(X_train,y_train,X_test,y_test)
 
 # stroe all the classifiers and get the right one to be used
 def get_clf_func(clf,k=15):
@@ -236,15 +243,15 @@ def preprocess(k):
 ###############################################################
 
 if __name__ == '__main__':
+    # k = 10
     k = 10
-    # k = 25
     # k = 50
     # preprocess(k)
     # domain = "reddit"
     # domain = "twitter"
     # store_writeprints(domain)
     source = "reddit"
-    # target = "twitter"
+    target = "twitter"
     # source = "twitter"
-    target = "reddit"
+    # target = "reddit"
     evaluate_pair(source,target,k)
