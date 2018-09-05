@@ -83,8 +83,7 @@ def finder(X_train,y_train,X_test,y_test):
     s_classes,t_classes = domain_label('s',y_train),domain_label('t',y_test)
     y_train = s_classes + t_classes
     proba_dict= mixed_training(X_train,y_train)
-    get_acc(ensemble(proba_dict,set(s_classes),set(t_classes)))
-    pass
+    return get_acc(ensemble(proba_dict,set(s_classes),set(t_classes)))
 
 if __name__ == '__main__':
     X_train = [[1,2,4],[2,3,4],[3,2,1],[3,4,2],[2,3,2]]
