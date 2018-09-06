@@ -177,6 +177,7 @@ def evaluate_pair(source,target,k=None):
         X_test = np.load("../data/%s/X_test.npy"%target)
         y_train = np.load("../data/%s/y_train.npy"%source)
         y_test = np.load("../data/%s/y_test.npy"%target)
+        print 'glove:',finder(X_train,y_train,X_test,y_test)
     else:
         X_train = np.load("../data/%s/%s/X_train.npy"%(source,k))
         X_test = np.load("../data/%s/%s/X_test.npy"%(target,k))
@@ -184,8 +185,8 @@ def evaluate_pair(source,target,k=None):
         y_test = np.load("../data/%s/%s/y_test.npy"%(target,k))
     # print 'glove:',baseline(X_train[:,:300],y_train,X_test[:,:300],y_test)
     # print 'glove+writeprints:',baseline(X_train,y_train,X_test,y_test)
-    print 'glove:',finder(X_train[:,:300],y_train,X_test[:,:300],y_test)
-    print 'glove+writeprints:',finder(X_train,y_train,X_test,y_test)
+        print 'glove:',finder(X_train[:,:300],y_train,X_test[:,:300],y_test)
+        print 'glove+writeprints:',finder(X_train,y_train,X_test,y_test)
     pass
 
 def filter_labels(X,y,selected_labels):
@@ -244,7 +245,7 @@ def preprocess(k):
 
 if __name__ == '__main__':
     # k = 10
-    k = 10
+    # k = 25
     # k = 50
     # preprocess(k)
     # domain = "reddit"
@@ -254,4 +255,5 @@ if __name__ == '__main__':
     target = "twitter"
     # source = "twitter"
     # target = "reddit"
-    evaluate_pair(source,target,k)
+    # evaluate_pair(source,target,k)
+    evaluate_pair(source,target)

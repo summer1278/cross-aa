@@ -42,7 +42,7 @@ def ensemble(proba_dict,s_classes,t_classes):
                 temp = p
                 best = b
         pair_proba[(a,best)] = temp
-    print pair_proba
+    # print pair_proba
     return pair_proba.keys()
 
 def new_train(X_train,y_train,target_class):
