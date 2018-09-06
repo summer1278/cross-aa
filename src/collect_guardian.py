@@ -5,7 +5,7 @@ Baseline methods for guardian dataset
  Xia Cui
  08/2018
 """
-from baseline import save_preprocess_obj,concatenate,set_up_data
+from baseline import save_preprocess_obj,concatenate,set_up_data,load_preprocess_obj
 from feature import get_features
 from adf import finder
 
@@ -81,7 +81,7 @@ def prepare_data(source,target,embeddings,writeprints=True):
     np.save("../data/train-test/%s-%s/X_train"%(source,target),X_train)
     np.save("../data/%s-%s/X_test"%(source,target),X_test)
     np.save("../data/%s-%s/y_train"%(source,target),y_train)
-    np.save("../data/%s-%s/y_test"%%(source,target),y_test)
+    np.save("../data/%s-%s/y_test"%(source,target),y_test)
     return X_train,y_train,X_test,y_test
 
 def evaluate_pair(source,target):
@@ -102,6 +102,7 @@ def preprocess():
         for target in domains:
             if source == target:
                 continue
+            print source,target
             prepare_data(source,target,embeddings)
     pass
 
